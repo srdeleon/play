@@ -1,18 +1,23 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import play.data.validation.Constraints;
+import play.data.validation.Constraints.Required;
+import play.mvc.PathBindable;
+import utils.EAN;
 
-public class Product {
+public class Product implements PathBindable<Product> {
 	
-	@Constraints.Required
+	@EAN
 	public String ean;
 	
-	@Constraints.Required
+	@Required
 	public String name;
 	
 	public String description;
+	
+	public List<Tag> tags = new LinkedList<Tag>();
 	
 	public Product() {}
 	
@@ -69,5 +74,23 @@ public class Product {
 		products.remove(findByEan(this.ean));
 		products.add(this);
 	}
+
+
+	@Override
+	public String javascriptUnbind() {
+		return this.ean;
+	}
+
+	@Override
+	public String unbind(String key) {
+		return this.ean;
+	}
+
+	@Override
+	public Product bind(String key, String value) {
+		return findByEan(value);
+	}
+
+
 
 }
