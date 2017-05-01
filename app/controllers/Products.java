@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Product;
+import models.StockItem;
 import models.Tag;
 import play.data.Form;
 import play.mvc.Result;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.avaje.ebean.Ebean;
 import com.google.common.io.Files;
 
 import views.html.products.*;
@@ -66,8 +68,13 @@ public class Products extends Controller {
       }
     }
     product.tags = tags;
+    
+    if(product.id == null) {
+        Ebean.save(product);
+    } else {
+        Ebean.update(product);
+    }
 
-    product.save();
     flash("success",
         String.format("Successfully added product %s", product));
 
@@ -79,7 +86,7 @@ public class Products extends Controller {
     if(product == null) {
         return notFound(String.format("Product %s does not exists.", ean));
     }
-    Product.remove(product);
+    Ebean.delete(product);
     return redirect(routes.Products.list(1));
   }
   
