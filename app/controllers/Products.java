@@ -10,10 +10,11 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.avaje.ebean.Ebean;
+
+
+import com.avaje.ebean.*;
+
 import com.google.common.io.Files;
 
 import views.html.products.*;
@@ -28,7 +29,7 @@ public class Products extends Controller {
   }
 
   public static Result list(Integer page) {
-    List<Product> products = Product.findAll();
+    Page<Product> products = Product.find(page);
     return ok(list.render(products));
   }
 

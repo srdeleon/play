@@ -18,11 +18,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.*;
+
+import com.avaje.ebean.Page;
+
 import play.db.ebean.Model;
-import play.db.ebean.Model.Finder;
 
 @Entity
-public class Product implements PathBindable<Product>,
+public class Product extends Model implements PathBindable<Product>,
     QueryStringBindable<Product> {
 
   private static List<Product> products;
@@ -93,9 +95,19 @@ public class Product implements PathBindable<Product>,
     return String.format("%s - %s", ean, name);
   }
 
-  public static List<Product> findAll() {
+  /*public static List<Product> findAll() {
     return new ArrayList<Product>(products);
-  }
+  }*/
+  
+  public static Page<Product> find(int page) {
+      return 
+              find.where()
+                  .orderBy("id asc")
+                  .findPagingList(10)
+                  .setFetchAhead(false)
+                  .getPage(page);
+    }
+
 
   public static Product findByEan(String ean) {
       return find.where().eq("ean", ean).findUnique();
