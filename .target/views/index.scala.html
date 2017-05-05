@@ -1,7 +1,18 @@
 @(message: String)
+@main("COMET") {
 
-@main("Welcome to Play 2.1") {
-    
-    @play20.welcome(message, style = "Java")
-    
+	<script type="text/javascript">
+		var cometMessage = function(event) {
+			console.log('Received event: ' + event)
+			$("#container").append("<li><a href='#'>" +
+			event + "<a/></li>")
+		}
+	</script>
+	
+	<div class="hero-unit">
+		<h1>Current Orders</h1>
+		<p>Prepare them all!</p>
+	</div>
+	<iframe style="display:none" id="messages" src="@routes.Application.liveUpdate.unique"></iframe>
+	<ul id="container" style="text-align:center" class="nav nav-tabs nav-stacked"></ul>
 }

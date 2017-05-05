@@ -34,11 +34,11 @@
           @product.ean 
         </a></td>
         <td><a href="@routes.Products.details(product)">@product.name</a></td>
-        <td><a href="@routes.Products.details(product)">@product.name</a></td>
+        <td><a href="@routes.Products.details(product)">@product.description</a></td>
         <td>@product.date.format("dd-MM-yyyy")</td>
         <td>
-          <a href="@routes.Products.details(product)"><i class="icon icon-pencil"></i></a> 
-          <a onclick="javascript:del('@routes.Products.delete(product.ean)')"><i class="icon icon-trash"></i></a> 
+          <a href="@routes.Products.details(product)"><i class="glyphicon glyphicon-pencil"></i></a> 
+          <a onclick="javascript:del('@routes.Products.delete(product.ean)')"><i class="glyphicon glyphicon-remove"></i></a> 
         </td>
       </tr>
       }
