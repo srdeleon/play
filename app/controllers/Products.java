@@ -10,8 +10,8 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import java.io.File;
 import java.io.IOException;
-
-
+import java.util.ArrayList;
+import java.util.List;
 
 import com.avaje.ebean.*;
 
@@ -25,7 +25,7 @@ public class Products extends Controller {
   private static final Form<Product> productForm = Form.form(Product.class);
 
   public static Result index() {
-    return redirect(routes.Products.list(1));
+    return redirect(routes.Products.list(0));
   }
 
   public static Result list(Integer page) {

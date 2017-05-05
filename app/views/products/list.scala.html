@@ -1,4 +1,4 @@
-@(products: List[Product])
+@(currentPage: com.avaje.ebean.Page[Product])
 @main("Products catalogue") {
 
   <h2>All products</h2>
@@ -27,7 +27,7 @@
       </tr>
     </thead>
     <tbody>
-    @for(product <- products) {
+    @for(product <-  currentPage.getList()) {
 
       <tr>
         <td><a href="@routes.Products.details(product)">
@@ -46,8 +46,46 @@
     </tbody>
    </table>
 
-  
-    
-  <a href="@routes.Products.newProduct()" class="btn">
-    <i class="icon-plus"></i> New product</a>
+   <div id="pagination" class="pagination">
+            <ul class="pagination">
+                @if(currentPage.hasPrev) {
+                    <li>
+                        <a href="@routes.Products.list(currentPage.getPageIndex - 1)" aria-label="Previous"><span aria-hidden="true">&laquo;</span> </a>
+                    </li>
+                } else {
+                    <li class="disabled">
+						<span>
+							<span aria-hidden="true">&laquo;</span>
+						</span>
+                    </li>
+                }
+                    @for(i <- 0 until (currentPage.getTotalPageCount())){
+                    	@if(i == currentPage.getPageIndex){
+            			<li class="active">
+            				<a  href="@routes.Products.list(i)">@(i+1) <span class="sr-only">(current)</span></a>
+            			</li>
+            			} else {
+            			<li>
+            				<a  href="@routes.Products.list(i)">@(i+1)</a>
+            			</li>
+            			}
+        			}
+                @if(currentPage.hasNext) {
+                    <li>
+                        <a href="@routes.Products.list(currentPage.getPageIndex + 1)" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+                    </li>
+                } else {
+                    <li class="disabled">
+						<span>
+							<span aria-hidden="true">&raquo;</span>
+						</span>
+                    </li>
+                }
+            </ul>
+	</div>
+  <div class="container">
+  	<button type="button" class="btn btn-default btn-xs">
+  		<a href="@routes.Products.newProduct()" class="btn"><i class="glyphicon glyphicon-plus"></i> New product</a>
+  	</button>
+  </div>
 }
