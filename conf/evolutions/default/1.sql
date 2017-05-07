@@ -38,6 +38,13 @@ create table tag (
   constraint pk_tag primary key (id))
 ;
 
+create table user (
+  id                        bigint not null,
+  email                     varchar(255),
+  password                  varchar(255),
+  constraint pk_user primary key (id))
+;
+
 create table warehouse (
   id                        bigint not null,
   name                      varchar(255),
@@ -58,6 +65,8 @@ create sequence product_seq;
 create sequence stock_item_seq;
 
 create sequence tag_seq;
+
+create sequence user_seq;
 
 create sequence warehouse_seq;
 
@@ -88,6 +97,8 @@ drop table if exists stock_item;
 
 drop table if exists tag;
 
+drop table if exists user;
+
 drop table if exists warehouse;
 
 SET REFERENTIAL_INTEGRITY TRUE;
@@ -99,6 +110,8 @@ drop sequence if exists product_seq;
 drop sequence if exists stock_item_seq;
 
 drop sequence if exists tag_seq;
+
+drop sequence if exists user_seq;
 
 drop sequence if exists warehouse_seq;
 

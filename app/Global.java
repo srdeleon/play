@@ -1,4 +1,5 @@
 import play.*;
+import play.api.mvc.EssentialFilter;
 import play.libs.*;
 import java.util.*;
 import models.*;
@@ -9,6 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import utils.*;
+import play.filters.csrf.CSRFFilter;
+
+
 
 public class Global extends GlobalSettings {
     
@@ -42,4 +46,13 @@ public class Global extends GlobalSettings {
       Formatters.register(Date.class, new AnnotationDateFormatter());
         
     }
+    
+    /*
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @Override
+    public <T extends EssentialFilter> Class<T>[] filters() {
+        Class[] filters = {CSRFFilter.class, BasicAuthenticationFilter.class};
+        return filters;
+    }
+    */
 }

@@ -12,14 +12,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.avaje.ebean.*;
-
 import com.google.common.io.Files;
-
 import views.html.products.*;
+import play.mvc.Security;
+import securesocial.core.java.SecureSocial;
 
-
+@Security.Authenticated(Secured.class)
 public class Products extends Controller {
 
   private static final Form<Product> productForm = Form.form(Product.class);
@@ -33,6 +32,7 @@ public class Products extends Controller {
     return ok(list.render(products));
   }
 
+  @SecureSocial.SecuredAction
   public static Result newProduct() {
     return ok(details.render(productForm));
   }

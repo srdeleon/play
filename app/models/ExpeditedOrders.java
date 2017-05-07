@@ -1,6 +1,7 @@
 package models;
 
-import play.mvc.Results.Chunks;
+import play.mvc.WebSocket;
+
 import java.util.*;
 import play.libs.*;
 import scala.concurrent.duration.Duration;
@@ -10,7 +11,7 @@ import static java.util.concurrent.TimeUnit.*;
 
 public class ExpeditedOrders extends UntypedActor {
 	
-	static List<Comet> comets = new ArrayList<Comet>();
+	static List<WebSocket.Out<String>> members = new ArrayList<WebSocket.Out<String>>();
 	
 	static ActorRef defaultActor = Akka.system().actorOf(new Props(ExpeditedOrders.class));
 	
@@ -25,18 +26,31 @@ public class ExpeditedOrders extends UntypedActor {
 				);
 	}
 	
-	public static void registerChunkOut(Comet out) {
-		ExpeditedOrders.comets.add(out);
+	public static void register(WebSocket.Out<String> out) {
+		members.add(out);
+	}
+	
+	public static void unregister(WebSocket.Out<String> out) {
+	    members.remove(out);
+	}
+	
+	public static void notifyOthers(WebSocket.Out<String> me, String event) {
+	    for(WebSocket.Out<String> out : members) {
+	        if(!out.equals(me)) {
+	            out.write(event);
+	        }
+	    }
 	}
 
-	@Override
-	public void onReceive(Object message) throws Exception {
-		Order order = (Order)message;
-		
-		for(Comet comet: comets) {
-			comet.sendMessage(order.toString());
-		}
-		
+	public static void notifyAll(String event) {
+	    for(WebSocket.Out<String> out : members) {
+	        out.write(event);
+	    }
+	}
+	
+	public void onReceive(Object message) throws Exception{
+	    Order order = (Order)message;
+	    notifyAll(order.toString());
 	}
 
 }

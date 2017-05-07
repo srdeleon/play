@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
+import models.Product;
+
 import org.junit.*;
 
 import play.mvc.*;
@@ -17,7 +20,8 @@ import play.libs.F.*;
 
 import static play.test.Helpers.*;
 import static org.fest.assertions.Assertions.*;
-
+import static org.junit.Assert.assertEquals;
+import play.test.Helpers.*;
 
 /**
 *
@@ -26,19 +30,14 @@ import static org.fest.assertions.Assertions.*;
 *
 */
 public class ApplicationTest {
-
+    
     @Test
-    public void simpleCheck() {
-        int a = 1 + 1;
-        assertThat(a).isEqualTo(2);
+    public void findByEan() {
+        running(fakeApplication(), new Runnable() {
+            public void run() {
+                Product product = Product.findByEan("1111111111111");
+                assertThat(product.name).isEqualTo("Paperclip 1111111111111");
+            }
+        });   
     }
-
-    @Test
-    public void renderTemplate() {
-        Content html = views.html.index.render("Your new application is ready.");
-        assertThat(contentType(html)).isEqualTo("text/html");
-        assertThat(contentAsString(html)).contains("Your new application is ready.");
-    }
-
-
 }
